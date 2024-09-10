@@ -17,7 +17,7 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      if (_username == 'admin' && _password == 'password') {
+      if (_username == '0' && _password == '0') {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => HomePage()),

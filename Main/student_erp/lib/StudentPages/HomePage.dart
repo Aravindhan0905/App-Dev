@@ -12,16 +12,11 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    if (index == _selectedIndex) return;
 
     switch (index) {
       case 0:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
+        // Staying on HomePage, no action needed
         break;
       case 1:
         Navigator.push(
@@ -44,179 +39,96 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<bool> _onWillPop() async {
-    if (_selectedIndex != 0) {
-      Navigator.pop(context); // Go back to the previous page
-      return false; // Prevents the app from closing
-    }
-    return true; // Allows the app to close
-  }
-
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: _onWillPop,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Home'),
-          leading: Builder(
-            builder: (BuildContext context) => IconButton(
-              icon: Icon(Icons.menu),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Home'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.account_circle),
+            onPressed: () {
+              // Handle profile button press
+            },
           ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.account_circle),
-              onPressed: () {
-                // Handle profile button press
-              },
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                CircleAvatar(
+                  radius: 50,
+                  backgroundImage: AssetImage(
+                      "assets/sakthivel.jpg"), // Replace with your image asset
+                ),
+                SizedBox(width: 20),
+                Text(
+                  'Student Name', // Replace with actual student name
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
-          ],
-        ),
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                ),
-                child: Text(
-                  'Menu',
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 251, 249, 249),
-                    fontSize: 24,
-                  ),
-                ),
-              ),
-              ListTile(
-                leading: Icon(Icons.home),
-                title: Text('Home'),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
-                  );
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.check_circle),
-                title: Text('Attendance'),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AttendancePage()),
-                  );
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.attach_money),
-                title: Text('Fees'),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => FeesPage()),
-                  );
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.notes),
-                title: Text('Notes'),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => NotesPage()),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
+            SizedBox(height: 20),
+            Text(
+              'Circulars & Events',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 10),
+            Expanded(
+              child: ListView(
                 children: <Widget>[
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundImage: AssetImage("assets/sakthivel.jpg"),
+                  Card(
+                    child: ListTile(
+                      title: Text('Event 1'),
+                      subtitle: Text('Details about event 1'),
+                    ),
                   ),
-                  SizedBox(width: 20),
-                  Text(
-                    'Student Name',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  Card(
+                    child: ListTile(
+                      title: Text('Event 2'),
+                      subtitle: Text('Details about event 2'),
+                    ),
+                  ),
+                  Card(
+                    child: ListTile(
+                      title: Text('Event 3'),
+                      subtitle: Text('Details about event 3'),
+                    ),
                   ),
                 ],
               ),
-              SizedBox(height: 20),
-              Text(
-                'Circulars & Events',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 10),
-              Expanded(
-                child: ListView(
-                  children: <Widget>[
-                    Card(
-                      child: ListTile(
-                        title: Text('Event 1'),
-                        subtitle: Text('Details about event 1'),
-                      ),
-                    ),
-                    Card(
-                      child: ListTile(
-                        title: Text('Event 2'),
-                        subtitle: Text('Details about event 2'),
-                      ),
-                    ),
-                    Card(
-                      child: ListTile(
-                        title: Text('Event 3'),
-                        subtitle: Text('Details about event 3'),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Colors.blue, // Set the background color here
-          selectedItemColor: Color.fromARGB(
-              255, 0, 0, 0), // Set the color for the selected item
-          unselectedItemColor:
-              Colors.grey, // Set the color for unselected items
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.check_circle),
-              label: 'Attendance',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.attach_money),
-              label: 'Fees',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notes),
-              label: 'Notes',
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.blue,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.check_circle),
+            label: 'Attendance',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.attach_money),
+            label: 'Fees',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notes),
+            label: 'Notes',
+          ),
+        ],
       ),
     );
   }

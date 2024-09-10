@@ -3,89 +3,173 @@ import 'HomePage.dart';
 import 'AttendancePage.dart';
 import 'FeesPage.dart';
 
-class NotesPage extends StatelessWidget {
+class NotesPage extends StatefulWidget {
+  @override
+  _NotesPageState createState() => _NotesPageState();
+}
+
+class _NotesPageState extends State<NotesPage> {
+  int _selectedIndex = 3;
+
+  // Dummy data for recent notes
+  List<Map<String, String>> recentNotes = [
+    {
+      "title": "Mathematics Notes",
+      "description": "Calculus and Integrals",
+      "date": "August 25, 2024"
+    },
+    {
+      "title": "Physics Notes",
+      "description": "Quantum Mechanics",
+      "date": "August 23, 2024"
+    },
+    {
+      "title": "Chemistry Notes",
+      "description": "Organic Chemistry",
+      "date": "August 20, 2024"
+    },
+  ];
+
+  // Dummy categories data
+  List<String> categories = ["Mathematics", "Physics", "Chemistry", "English"];
+
+  void _onItemTapped(int index) {
+    if (index == _selectedIndex) return;
+
+    switch (index) {
+      case 0:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+        break;
+      case 1:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => AttendancePage()),
+        );
+        break;
+      case 2:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => FeesPage()),
+        );
+        break;
+      case 3:
+        break; // Stay on NotesPage
+    }
+  }
+
+  Widget _buildSearchBar() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextField(
+        decoration: InputDecoration(
+          hintText: 'Search notes...',
+          prefixIcon: Icon(Icons.search),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCategoriesSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'Folders',
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 10),
+        SizedBox(
+          height: 100,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: categories.map((category) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Container(
+                  width: 120,
+                  decoration: BoxDecoration(
+                    color: Colors.blue[50],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(
+                    child: Text(
+                      category,
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRecentNotesSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'Recent Notes',
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 10),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: recentNotes.length,
+          itemBuilder: (context, index) {
+            return Card(
+              child: ListTile(
+                title: Text(recentNotes[index]['title']!),
+                subtitle: Text(recentNotes[index]['description']!),
+                trailing: Text(recentNotes[index]['date']!),
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Notes'),
-        leading: Builder(
-          builder: (BuildContext context) => IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {
-              Scaffold.of(context).openDrawer(); // Open the drawer
-            },
-          ),
+        leading: BackButton(
+          color: Colors.black,
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ),
-      drawer: Drawer(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: ListView(
-          padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text(
-                'Menu',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Home'),
-              onTap: () {
-                Navigator.pop(context); // Close the drawer
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.check_circle),
-              title: Text('Attendance'),
-              onTap: () {
-                Navigator.pop(context); // Close the drawer
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => AttendancePage()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.attach_money),
-              title: Text('Fees'),
-              onTap: () {
-                Navigator.pop(context); // Close the drawer
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => FeesPage()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.notes),
-              title: Text('Notes'),
-              onTap: () {
-                Navigator.pop(context); // Close the drawer
-                // Already on NotesPage, no need to navigate again
-              },
-            ),
+            _buildSearchBar(),
+            SizedBox(height: 20),
+            _buildCategoriesSection(),
+            SizedBox(height: 20),
+            _buildRecentNotesSection(),
           ],
         ),
       ),
-      body: Center(
-        child: Text('Notes Page'),
-      ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.blue, // Set the background color here
-        selectedItemColor:
-            Color.fromARGB(255, 0, 0, 0), // Set the color for the selected item
-        unselectedItemColor: Colors.grey, // Set the color for unselected items
+        backgroundColor: Colors.blue,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -104,32 +188,6 @@ class NotesPage extends StatelessWidget {
             label: 'Notes',
           ),
         ],
-        currentIndex: 3, // Set to 3 to highlight 'Notes'
-        onTap: (int index) {
-          switch (index) {
-            case 0:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => HomePage()),
-              );
-              break;
-            case 1:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => AttendancePage()),
-              );
-              break;
-            case 2:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => FeesPage()),
-              );
-              break;
-            case 3:
-              // Already on NotesPage, no need to navigate again
-              break;
-          }
-        },
       ),
     );
   }
