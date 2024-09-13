@@ -4,12 +4,14 @@ import 'FeesPage.dart';
 import 'NotesPage.dart';
 
 class AttendancePage extends StatefulWidget {
+  const AttendancePage({super.key});
+
   @override
   _AttendancePageState createState() => _AttendancePageState();
 }
 
 class _AttendancePageState extends State<AttendancePage> {
-  int _selectedIndex = 1;
+  final int _selectedIndex = 1;
 
   // Dummy Data for Attendance Stats
   final double totalAttendance = 85.0; // Total percentage
@@ -33,7 +35,7 @@ class _AttendancePageState extends State<AttendancePage> {
       case 0:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomePage()),
+          MaterialPageRoute(builder: (context) => const HomePage()),
         );
         break;
       case 1:
@@ -41,13 +43,13 @@ class _AttendancePageState extends State<AttendancePage> {
       case 2:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => FeesPage()),
+          MaterialPageRoute(builder: (context) => const FeesPage()),
         );
         break;
       case 3:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => NotesPage()),
+          MaterialPageRoute(builder: (context) => const NotesPage()),
         );
         break;
     }
@@ -56,68 +58,71 @@ class _AttendancePageState extends State<AttendancePage> {
   Widget _buildAttendanceSummary() {
     return Column(
       children: <Widget>[
-        Text(
+        const Text(
           'Total Attendance',
           style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         CircularProgressIndicator(
           value: totalAttendance / 100,
           strokeWidth: 8.0,
           backgroundColor: Colors.grey[200],
-          valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+          valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Text(
           '$totalAttendance%',
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Column(
               children: <Widget>[
-                Text(
+                const Text(
                   'Total Days',
                   style: TextStyle(fontSize: 16),
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Text(
                   '$totalClassDays',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
             Column(
               children: <Widget>[
-                Text(
+                const Text(
                   'Days Attended',
                   style: TextStyle(fontSize: 16),
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Text(
                   '$totalDaysAttended',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
             Column(
               children: <Widget>[
-                Text(
+                const Text(
                   'Days Missed',
                   style: TextStyle(fontSize: 16),
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Text(
                   '$totalDaysMissed',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
           ],
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         Text(
           'Today\'s Attendance: $todayStatus',
           style: TextStyle(
@@ -133,11 +138,11 @@ class _AttendancePageState extends State<AttendancePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
+        const Text(
           'Course-wise Attendance',
           style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Column(
           children: courseAttendance.entries.map((entry) {
             return Padding(
@@ -147,11 +152,12 @@ class _AttendancePageState extends State<AttendancePage> {
                 children: <Widget>[
                   Text(
                     entry.key,
-                    style: TextStyle(fontSize: 18),
+                    style: const TextStyle(fontSize: 18),
                   ),
                   Text(
                     '${entry.value}%',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -166,14 +172,14 @@ class _AttendancePageState extends State<AttendancePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
+        const Text(
           'Attendance History',
           style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         ListView(
           shrinkWrap: true,
-          children: <Widget>[
+          children: const <Widget>[
             ListTile(
               leading: Icon(Icons.check_circle, color: Colors.green),
               title: Text('August 25, 2024'),
@@ -199,9 +205,9 @@ class _AttendancePageState extends State<AttendancePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Attendance'),
+        title: const Text('Attendance'),
         leading: BackButton(
-          color: Color.fromARGB(255, 0, 0, 0),
+          color: const Color.fromARGB(255, 0, 0, 0),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -212,9 +218,9 @@ class _AttendancePageState extends State<AttendancePage> {
         child: ListView(
           children: <Widget>[
             _buildAttendanceSummary(),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             _buildCourseAttendance(),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             _buildAttendanceHistory(),
           ],
         ),

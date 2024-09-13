@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'StudentPages/LoginPage.dart';
 
 void main() {
-  runApp(StudentERPApp());
+  runApp(const StudentERPApp());
 }
 
 class StudentERPApp extends StatelessWidget {
+  const StudentERPApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -13,8 +15,9 @@ class StudentERPApp extends StatelessWidget {
       title: 'Student ERP',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        useMaterial3: true,
       ),
-      home: LoginPage(), // Set the initial page to the Login Page
+      home: const LoginPage(), // Set the initial page to the Login Page
     );
   }
 }

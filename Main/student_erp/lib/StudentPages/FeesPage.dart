@@ -4,12 +4,14 @@ import 'AttendancePage.dart';
 import 'NotesPage.dart';
 
 class FeesPage extends StatefulWidget {
+  const FeesPage({super.key});
+
   @override
   _FeesPageState createState() => _FeesPageState();
 }
 
 class _FeesPageState extends State<FeesPage> {
-  int _selectedIndex = 2;
+  final int _selectedIndex = 2;
 
   // Hardcoded student preferences (for demo)
   bool isHostelStudent = true;
@@ -47,13 +49,13 @@ class _FeesPageState extends State<FeesPage> {
       case 0:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => HomePage()),
+          MaterialPageRoute(builder: (context) => const HomePage()),
         );
         break;
       case 1:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => AttendancePage()),
+          MaterialPageRoute(builder: (context) => const AttendancePage()),
         );
         break;
       case 2:
@@ -62,7 +64,7 @@ class _FeesPageState extends State<FeesPage> {
       case 3:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => NotesPage()),
+          MaterialPageRoute(builder: (context) => const NotesPage()),
         );
         break;
     }
@@ -72,7 +74,7 @@ class _FeesPageState extends State<FeesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Fees'),
+        title: const Text('Fees'),
         leading: BackButton(
           color: Colors.black,
           onPressed: () {
@@ -92,22 +94,23 @@ class _FeesPageState extends State<FeesPage> {
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
                   'Total Pending Fees: ₹${fees["Tuition Fees"]["Total"] - fees["Tuition Fees"]["Paid"] + fees["Hostel Fees"]["Total"] - fees["Hostel Fees"]["Paid"] + fees["Bus Fees"]["Total"] - fees["Bus Fees"]["Paid"]}',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Personalized Fees
-            Text('Your Fees',
+            const Text('Your Fees',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             if (isHostelStudent) feeCard('Hostel Fees', fees['Hostel Fees']),
             if (usesBus) feeCard('Bus Fees', fees['Bus Fees']),
             feeCard('Tuition Fees', fees['Tuition Fees']),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Payment History
-            Text('Payment History',
+            const Text('Payment History',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             Expanded(
               child: ListView.builder(
@@ -130,7 +133,7 @@ class _FeesPageState extends State<FeesPage> {
               onPressed: () {
                 // Placeholder for online payment action
               },
-              child: Text('Pay Now'),
+              child: const Text('Pay Now'),
             ),
           ],
         ),

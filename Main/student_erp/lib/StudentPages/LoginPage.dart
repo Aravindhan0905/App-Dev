@@ -4,6 +4,8 @@ import '../FacultyPages/FacultyHomePage.dart';
 import 'HomePage.dart'; // Import the home page
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -20,30 +22,30 @@ class _LoginPageState extends State<LoginPage> {
       if (_username == '0' && _password == '0') {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomePage()),
+          MaterialPageRoute(builder: (context) => const HomePage()),
         );
       } else if (_username == 'hod' && _password == 'password') {
         // Navigate to Faculty Home Page
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HodHomePage()),
+          MaterialPageRoute(builder: (context) => const HodHomePage()),
         );
       } else if (_username == 'faculty' && _password == 'password') {
         // Navigate to Faculty Home Page
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => FacultyHomePage()),
+          MaterialPageRoute(builder: (context) => const FacultyHomePage()),
         );
       } else {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Login Failed'),
-            content: Text('Incorrect username or password'),
+            title: const Text('Login Failed'),
+            content: const Text('Incorrect username or password'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           ),
@@ -61,28 +63,28 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: 80),
+              const SizedBox(height: 80),
               Image.asset(
                 "assets/kiotLOGO.png", // Path to your logo
                 height: 100,
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Student ERP',
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 10),
-              Text(
+              const SizedBox(height: 10),
+              const Text(
                 'Manage Your Education Seamlessly',
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.grey,
                 ),
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               Form(
                 key: _formKey,
                 child: Column(
@@ -90,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Username',
-                        prefixIcon: Icon(Icons.person),
+                        prefixIcon: const Icon(Icons.person),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -107,11 +109,11 @@ class _LoginPageState extends State<LoginPage> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Password',
-                        prefixIcon: Icon(Icons.lock),
+                        prefixIcon: const Icon(Icons.lock),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -129,14 +131,14 @@ class _LoginPageState extends State<LoginPage> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
                         onPressed: () {
                           // Forgot password functionality
                         },
-                        child: Text(
+                        child: const Text(
                           'Forgot Password?',
                           style: TextStyle(
                             color: Colors.blue,
@@ -144,7 +146,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
@@ -153,25 +155,25 @@ class _LoginPageState extends State<LoginPage> {
                             // Sign up functionality
                           },
                           style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 30, vertical: 15),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          child: Text('Sign Up'),
+                          child: const Text('Sign Up'),
                         ),
                         ElevatedButton(
                           onPressed: _login, // Call the login function
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue,
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 30, vertical: 15),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          child: Text('Login'),
+                          child: const Text('Login'),
                         ),
                       ],
                     ),

@@ -4,12 +4,14 @@ import 'AttendancePage.dart';
 import 'FeesPage.dart';
 
 class NotesPage extends StatefulWidget {
+  const NotesPage({super.key});
+
   @override
   _NotesPageState createState() => _NotesPageState();
 }
 
 class _NotesPageState extends State<NotesPage> {
-  int _selectedIndex = 3;
+  final int _selectedIndex = 3;
 
   // Dummy data for recent notes
   List<Map<String, String>> recentNotes = [
@@ -40,19 +42,19 @@ class _NotesPageState extends State<NotesPage> {
       case 0:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomePage()),
+          MaterialPageRoute(builder: (context) => const HomePage()),
         );
         break;
       case 1:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => AttendancePage()),
+          MaterialPageRoute(builder: (context) => const AttendancePage()),
         );
         break;
       case 2:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => FeesPage()),
+          MaterialPageRoute(builder: (context) => const FeesPage()),
         );
         break;
       case 3:
@@ -66,7 +68,7 @@ class _NotesPageState extends State<NotesPage> {
       child: TextField(
         decoration: InputDecoration(
           hintText: 'Search notes...',
-          prefixIcon: Icon(Icons.search),
+          prefixIcon: const Icon(Icons.search),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),
@@ -79,11 +81,11 @@ class _NotesPageState extends State<NotesPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
+        const Text(
           'Folders',
           style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         SizedBox(
           height: 100,
           child: ListView(
@@ -100,8 +102,8 @@ class _NotesPageState extends State<NotesPage> {
                   child: Center(
                     child: Text(
                       category,
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
@@ -117,14 +119,14 @@ class _NotesPageState extends State<NotesPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
+        const Text(
           'Recent Notes',
           style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         ListView.builder(
           shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: recentNotes.length,
           itemBuilder: (context, index) {
             return Card(
@@ -144,7 +146,7 @@ class _NotesPageState extends State<NotesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notes'),
+        title: const Text('Notes'),
         leading: BackButton(
           color: Colors.black,
           onPressed: () {
@@ -157,9 +159,9 @@ class _NotesPageState extends State<NotesPage> {
         child: ListView(
           children: <Widget>[
             _buildSearchBar(),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             _buildCategoriesSection(),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             _buildRecentNotesSection(),
           ],
         ),
