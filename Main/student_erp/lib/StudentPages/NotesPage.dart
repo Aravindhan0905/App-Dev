@@ -42,7 +42,7 @@ class _NotesPageState extends State<NotesPage> {
       case 0:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(builder: (context) => HomePage()),
         );
         break;
       case 1:

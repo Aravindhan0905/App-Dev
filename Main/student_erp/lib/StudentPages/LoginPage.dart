@@ -22,10 +22,10 @@ class _LoginPageState extends State<LoginPage> {
       if (_username == '0' && _password == '0') {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(builder: (context) => HomePage()),
         );
       } else if (_username == 'hod' && _password == 'password') {
-        // Navigate to Faculty Home Page
+        // Navigate to hod Home Page
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const HodHomePage()),
