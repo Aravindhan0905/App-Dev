@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import '../HodPages/HodHomePage.dart';
 import '../FacultyPages/FacultyHomePage.dart';
-import 'HomePage.dart'; // Import the home page
+import 'HomePage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -10,32 +12,43 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
+// Function to handle login
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   String _username = '';
   String _password = '';
+  final String _errorMessage = '';
 
-  void _login() {
+  Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      if (_username == '0' && _password == '0') {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
-      } else if (_username == 'hod' && _password == 'password') {
-        // Navigate to hod Home Page
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const HodHomePage()),
-        );
-      } else if (_username == 'faculty' && _password == 'password') {
-        // Navigate to Faculty Home Page
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const FacultyHomePage()),
-        );
+      final response = await http.post(
+        Uri.parse('http://10.0.2.2:5000/login'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'email': _username, 'password': _password}),
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final role = data['role'];
+
+        if (role == 'student') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const HomePage()),
+          );
+        } else if (role == 'hod') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const HodHomePage()),
+          );
+        } else if (role == 'faculty') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const FacultyHomePage()),
+          );
+        }
       } else {
         showDialog(
           context: context,
@@ -91,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                   children: <Widget>[
                     TextFormField(
                       decoration: InputDecoration(
-                        labelText: 'Username',
+                        labelText: 'Email',
                         prefixIcon: const Icon(Icons.person),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -104,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                       },
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'Please enter your username';
+                          return 'Please enter your email';
                         }
                         return null;
                       },
@@ -177,6 +190,12 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 20),
+                    if (_errorMessage.isNotEmpty)
+                      Text(
+                        _errorMessage,
+                        style: const TextStyle(color: Colors.red),
+                      ),
                   ],
                 ),
               ),
