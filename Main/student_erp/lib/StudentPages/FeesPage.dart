@@ -1,92 +1,150 @@
 import 'package:flutter/material.dart';
+import 'package:student_erp/StudentPages/LoginPage.dart';
 import 'HomePage.dart';
 import 'AttendancePage.dart';
 import 'NotesPage.dart';
 
-class FeesPage extends StatelessWidget {
+class FeesPage extends StatefulWidget {
+  const FeesPage({super.key});
+
+  @override
+  _FeesPageState createState() => _FeesPageState();
+}
+
+class _FeesPageState extends State<FeesPage> {
+  final int _selectedIndex = 2;
+
+  // Hardcoded student preferences (for demo)
+  bool isHostelStudent = true;
+  bool usesBus = false;
+
+  // Mock data for fee details and payment history
+  Map<String, dynamic> fees = {
+    "Tuition Fees": {
+      "Total": 50000,
+      "Paid": 30000,
+      "Due Date": "30 Sept 2024",
+    },
+    "Hostel Fees": {
+      "Total": 20000,
+      "Paid": 10000,
+      "Due Date": "15 Sept 2024",
+    },
+    "Bus Fees": {
+      "Total": 10000,
+      "Paid": 5000,
+      "Due Date": "1 Oct 2024",
+    }
+  };
+
+  List<Map<String, dynamic>> paymentHistory = [
+    {"Date": "1 Sept 2024", "Amount": 10000, "Status": "Paid"},
+    {"Date": "15 Aug 2024", "Amount": 20000, "Status": "Paid"},
+    {"Date": "10 July 2024", "Amount": 5000, "Status": "Paid"},
+  ];
+
+  void _onItemTapped(int index) {
+    if (index == _selectedIndex) return;
+
+    switch (index) {
+      case 0:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AttendancePage()),
+        );
+        break;
+      case 2:
+        // Stay on FeesPage
+        break;
+      case 3:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const NotesPage()),
+        );
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Fees'),
-        leading: Builder(
-          builder: (BuildContext context) => IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {
-              // Open the drawer when the menu button is pressed
-              Scaffold.of(context).openDrawer();
-            },
-          ),
+        title: const Text('Fees'),
+        leading: BackButton(
+          color: Colors.black,
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text(
-                'Menu',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Total Pending and Paid Fees
+            Card(
+              elevation: 5,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  'Total Pending Fees: ₹${fees["Tuition Fees"]["Total"] - fees["Tuition Fees"]["Paid"] + fees["Hostel Fees"]["Total"] - fees["Hostel Fees"]["Paid"] + fees["Bus Fees"]["Total"] - fees["Bus Fees"]["Paid"]}',
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Home'),
-              onTap: () {
-                Navigator.pop(context); // Close the drawer
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
-                );
-              },
+            const SizedBox(height: 20),
+
+            // Personalized Fees
+            const Text('Your Fees',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            if (isHostelStudent) feeCard('Hostel Fees', fees['Hostel Fees']),
+            if (usesBus) feeCard('Bus Fees', fees['Bus Fees']),
+            feeCard('Tuition Fees', fees['Tuition Fees']),
+            const SizedBox(height: 20),
+
+            // Payment History
+            const Text('Payment History',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Expanded(
+              child: ListView.builder(
+                itemCount: paymentHistory.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    child: ListTile(
+                      title: Text("Date: ${paymentHistory[index]["Date"]}"),
+                      subtitle:
+                          Text("Amount: ₹${paymentHistory[index]["Amount"]}"),
+                      trailing: Text(paymentHistory[index]["Status"]),
+                    ),
+                  );
+                },
+              ),
             ),
-            ListTile(
-              leading: Icon(Icons.check_circle),
-              title: Text('Attendance'),
-              onTap: () {
-                Navigator.pop(context); // Close the drawer
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => AttendancePage()),
-                );
+
+            // Online Payment Button
+            ElevatedButton(
+              onPressed: () {
+                // Placeholder for online payment action
               },
-            ),
-            ListTile(
-              leading: Icon(Icons.attach_money),
-              title: Text('Fees'),
-              onTap: () {
-                Navigator.pop(context); // Close the drawer
-                // Already on FeesPage, no need to navigate again
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.notes),
-              title: Text('Notes'),
-              onTap: () {
-                Navigator.pop(context); // Close the drawer
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => NotesPage()),
-                );
-              },
+              child: const Text('Pay Now'),
             ),
           ],
         ),
       ),
-      body: Center(
-        child: Text('Fees Page'),
-      ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.blue, // Set the background color here
-        selectedItemColor:
-            Color.fromARGB(255, 0, 0, 0), // Set the color for the selected item
-        unselectedItemColor: Colors.grey, // Set the color for unselected items
+        backgroundColor: Colors.blue,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -105,32 +163,24 @@ class FeesPage extends StatelessWidget {
             label: 'Notes',
           ),
         ],
-        currentIndex: 2, // Set to 2 to highlight 'Fees'
-        onTap: (int index) {
-          switch (index) {
-            case 0:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => HomePage()),
-              );
-              break;
-            case 1:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => AttendancePage()),
-              );
-              break;
-            case 2:
-              // Already on FeesPage, no need to navigate again
-              break;
-            case 3:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => NotesPage()),
-              );
-              break;
-          }
-        },
+      ),
+    );
+  }
+
+  // Widget for fee cards
+  Widget feeCard(String feeType, Map<String, dynamic> feeDetails) {
+    return Card(
+      elevation: 5,
+      child: ListTile(
+        title: Text(feeType),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Total: ₹${feeDetails["Total"]}'),
+            Text('Paid: ₹${feeDetails["Paid"]}'),
+            Text('Due Date: ${feeDetails["Due Date"]}'),
+          ],
+        ),
       ),
     );
   }

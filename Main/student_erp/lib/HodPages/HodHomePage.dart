@@ -5,8 +5,8 @@ import 'package:student_erp/StudentPages/AttendancePage.dart';
 import 'package:student_erp/StudentPages/FeesPage.dart';
 import 'package:student_erp/StudentPages/NotesPage.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HodHomePage extends StatefulWidget {
+  const HodHomePage({super.key});
 
   @override
   _HomePageState createState() => _HomePageState();

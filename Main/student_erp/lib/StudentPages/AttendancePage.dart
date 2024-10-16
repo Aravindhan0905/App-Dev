@@ -1,173 +1,234 @@
 import 'package:flutter/material.dart';
-import 'HomePage.dart';
-import 'FeesPage.dart';
-import 'NotesPage.dart';
+import 'package:student_erp/StudentPages/HomePage.dart';
+import 'package:student_erp/StudentPages/FeesPage.dart';
+import 'package:student_erp/StudentPages/NotesPage.dart';
 
 class AttendancePage extends StatefulWidget {
+  const AttendancePage({super.key});
+
   @override
   _AttendancePageState createState() => _AttendancePageState();
 }
 
 class _AttendancePageState extends State<AttendancePage> {
-  int _selectedIndex = 1;
+  final int _selectedIndex = 1;
+
+  // Dummy Data for Attendance Stats
+  final double totalAttendance = 85.0; // Total percentage
+  final int totalDaysAttended = 170;
+  final int totalDaysMissed = 30;
+  final int totalClassDays = 200;
+  final String todayStatus = "Attended";
+
+  // Dummy Data for Course-wise Attendance
+  final Map<String, double> courseAttendance = {
+    'Mathematics': 90.0,
+    'Physics': 80.0,
+    'Chemistry': 85.0,
+    'English': 75.0,
+  };
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    if (index == _selectedIndex) return;
 
     switch (index) {
       case 0:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomePage()),
+          MaterialPageRoute(builder: (context) => const HomePage()),
         );
         break;
       case 1:
-        // Already on AttendancePage, no need to navigate
-        break;
+        break; // Stay on AttendancePage
       case 2:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => FeesPage()),
+          MaterialPageRoute(builder: (context) => const FeesPage()),
         );
         break;
       case 3:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => NotesPage()),
+          MaterialPageRoute(builder: (context) => const NotesPage()),
         );
         break;
     }
+  }
+
+  Widget _buildAttendanceSummary() {
+    return Column(
+      children: <Widget>[
+        const Text(
+          'Total Attendance',
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 10),
+        CircularProgressIndicator(
+          value: totalAttendance / 100,
+          strokeWidth: 8.0,
+          backgroundColor: Colors.grey[200],
+          valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
+        ),
+        const SizedBox(height: 10),
+        Text(
+          '$totalAttendance%',
+          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                const Text(
+                  'Total Days',
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  '$totalClassDays',
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            Column(
+              children: <Widget>[
+                const Text(
+                  'Days Attended',
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  '$totalDaysAttended',
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            Column(
+              children: <Widget>[
+                const Text(
+                  'Days Missed',
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  '$totalDaysMissed',
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
+        Text(
+          'Today\'s Attendance: $todayStatus',
+          style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: todayStatus == "Attended" ? Colors.green : Colors.red),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCourseAttendance() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        const Text(
+          'Course-wise Attendance',
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 10),
+        Column(
+          children: courseAttendance.entries.map((entry) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    entry.key,
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                  Text(
+                    '${entry.value}%',
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAttendanceHistory() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        const Text(
+          'Attendance History',
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 10),
+        ListView(
+          shrinkWrap: true,
+          children: const <Widget>[
+            ListTile(
+              leading: Icon(Icons.check_circle, color: Colors.green),
+              title: Text('August 25, 2024'),
+              subtitle: Text('Attended'),
+            ),
+            ListTile(
+              leading: Icon(Icons.cancel, color: Colors.red),
+              title: Text('August 24, 2024'),
+              subtitle: Text('Missed'),
+            ),
+            ListTile(
+              leading: Icon(Icons.check_circle, color: Colors.green),
+              title: Text('August 23, 2024'),
+              subtitle: Text('Attended'),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Attendance'),
-        leading: Builder(
-          builder: (BuildContext context) => IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-          ),
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.account_circle),
-            onPressed: () {
-              // Handle profile button press
-            },
-          ),
-        ],
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text(
-                'Menu',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Home'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.check_circle),
-              title: Text('Attendance'),
-              onTap: () {
-                Navigator.pop(context);
-                // Already on AttendancePage, no need to navigate
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.attach_money),
-              title: Text('Fees'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => FeesPage()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.notes),
-              title: Text('Notes'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => NotesPage()),
-                );
-              },
-            ),
-          ],
+        title: const Text('Attendance'),
+        leading: BackButton(
+          color: const Color.fromARGB(255, 0, 0, 0),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: <Widget>[
-            Text(
-              'Your Attendance',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
-            Expanded(
-              child: ListView(
-                children: <Widget>[
-                  Card(
-                    child: ListTile(
-                      leading: Icon(Icons.check_circle, color: Colors.green),
-                      title: Text('Mathematics'),
-                      subtitle: Text('Attendance: 90%'),
-                    ),
-                  ),
-                  Card(
-                    child: ListTile(
-                      leading: Icon(Icons.check_circle, color: Colors.green),
-                      title: Text('Physics'),
-                      subtitle: Text('Attendance: 85%'),
-                    ),
-                  ),
-                  Card(
-                    child: ListTile(
-                      leading: Icon(Icons.check_circle, color: Colors.green),
-                      title: Text('Chemistry'),
-                      subtitle: Text('Attendance: 88%'),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            _buildAttendanceSummary(),
+            const SizedBox(height: 30),
+            _buildCourseAttendance(),
+            const SizedBox(height: 30),
+            _buildAttendanceHistory(),
           ],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.blue, // Set the background color here
-        selectedItemColor:
-            Color.fromARGB(255, 0, 0, 0), // Set the color for the selected item
-        unselectedItemColor: Colors.grey, // Set the color for unselected items
+        backgroundColor: Colors.blue,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         items: const <BottomNavigationBarItem>[

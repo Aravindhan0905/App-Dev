@@ -1,35 +1,64 @@
 import 'package:flutter/material.dart';
-import 'HomePage.dart'; // Import the home page
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import '../HodPages/HodHomePage.dart';
+import '../FacultyPages/FacultyHomePage.dart';
+import 'HomePage.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
+// Function to handle login
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   String _username = '';
   String _password = '';
+  final String _errorMessage = '';
 
-  void _login() {
+  Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      if (_username == 'admin' && _password == 'password') {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
+      final response = await http.post(
+        Uri.parse('http://10.11.12.91:5000/login'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'email': _username, 'password': _password}),
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final role = data['role'];
+
+        if (role == 'student') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const HomePage()),
+          );
+        } else if (role == 'hod') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const HodHomePage()),
+          );
+        } else if (role == 'faculty') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const FacultyHomePage()),
+          );
+        }
       } else {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Login Failed'),
-            content: Text('Incorrect username or password'),
+            title: const Text('Login Failed'),
+            content: const Text('Incorrect username or password'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           ),
@@ -47,36 +76,36 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: 80),
+              const SizedBox(height: 80),
               Image.asset(
                 "assets/kiotLOGO.png", // Path to your logo
                 height: 100,
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Student ERP',
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 10),
-              Text(
+              const SizedBox(height: 10),
+              const Text(
                 'Manage Your Education Seamlessly',
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.grey,
                 ),
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               Form(
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
                     TextFormField(
                       decoration: InputDecoration(
-                        labelText: 'Username',
-                        prefixIcon: Icon(Icons.person),
+                        labelText: 'Email',
+                        prefixIcon: const Icon(Icons.person),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -88,16 +117,16 @@ class _LoginPageState extends State<LoginPage> {
                       },
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'Please enter your username';
+                          return 'Please enter your email';
                         }
                         return null;
                       },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Password',
-                        prefixIcon: Icon(Icons.lock),
+                        prefixIcon: const Icon(Icons.lock),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -115,14 +144,14 @@ class _LoginPageState extends State<LoginPage> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
                         onPressed: () {
                           // Forgot password functionality
                         },
-                        child: Text(
+                        child: const Text(
                           'Forgot Password?',
                           style: TextStyle(
                             color: Colors.blue,
@@ -130,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
@@ -139,28 +168,34 @@ class _LoginPageState extends State<LoginPage> {
                             // Sign up functionality
                           },
                           style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 30, vertical: 15),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          child: Text('Sign Up'),
+                          child: const Text('Sign Up'),
                         ),
                         ElevatedButton(
                           onPressed: _login, // Call the login function
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue,
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 30, vertical: 15),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          child: Text('Login'),
+                          child: const Text('Login'),
                         ),
                       ],
                     ),
+                    const SizedBox(height: 20),
+                    if (_errorMessage.isNotEmpty)
+                      Text(
+                        _errorMessage,
+                        style: const TextStyle(color: Colors.red),
+                      ),
                   ],
                 ),
               ),
