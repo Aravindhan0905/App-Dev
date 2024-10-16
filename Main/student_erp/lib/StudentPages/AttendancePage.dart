@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'HomePage.dart';
-import 'FeesPage.dart';
-import 'NotesPage.dart';
+import 'package:student_erp/StudentPages/HomePage.dart';
+import 'package:student_erp/StudentPages/FeesPage.dart';
+import 'package:student_erp/StudentPages/NotesPage.dart';
 
 class AttendancePage extends StatefulWidget {
   const AttendancePage({super.key});

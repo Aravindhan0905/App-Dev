@@ -9,11 +9,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  csv: ^5.1.1           # Keeping the newer version of csv
   cupertino_icons: ^1.0.6
   flutter_native_splash: ^2.4.1
-  http: ^0.13.4
-  file_picker: ^5.2.3 
-
+  http: ^1.2.2         # Keeping the newer version of http
+  file_picker: ^5.5.0  # Updated to the latest version
+  path_provider: ^2.1.4
+  permission_handler: ^11.3.1
 
 dev_dependencies:
   flutter_test:
@@ -25,7 +27,7 @@ flutter:
 
   assets:
     - "assets/kiotLOGO.png"
-    - "assets/sakthivel.jpg"  # Commented to avoid errors, make sure this file exists
+    - "assets/sakthivelsha.jpg"  # Updated to match the resolved version
 
 flutter_native_splash:
   color: "#42a5f5"
@@ -33,4 +35,3 @@ flutter_native_splash:
   android_12:
     image: assets/android12splash.png
     color: "#42a5f5"
-

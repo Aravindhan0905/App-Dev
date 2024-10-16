@@ -16,7 +16,7 @@ class StudentERPApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         useMaterial3: true,
-      ),
+      ), 
       home: const LoginPage(), // Set the initial page to the Login Page
     );
   }
