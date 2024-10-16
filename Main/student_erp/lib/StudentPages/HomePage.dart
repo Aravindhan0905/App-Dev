@@ -5,12 +5,14 @@ import 'FeesPage.dart';
 import 'NotesPage.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
+  final int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
     if (index == _selectedIndex) return;
@@ -22,19 +24,19 @@ class _HomePageState extends State<HomePage> {
       case 1:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => AttendancePage()),
+          MaterialPageRoute(builder: (context) => const AttendancePage()),
         );
         break;
       case 2:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => FeesPage()),
+          MaterialPageRoute(builder: (context) => const FeesPage()),
         );
         break;
       case 3:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => NotesPage()),
+          MaterialPageRoute(builder: (context) => const NotesPage()),
         );
         break;
     }
@@ -44,11 +46,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: const Text('Home'),
         actions: <Widget>[
           Builder(
             builder: (context) => IconButton(
-              icon: Icon(Icons.account_circle),
+              icon: const Icon(Icons.account_circle),
               onPressed: () {
                 Scaffold.of(context)
                     .openEndDrawer(); // Opens the sliding drawer
@@ -61,7 +63,7 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            UserAccountsDrawerHeader(
+            const UserAccountsDrawerHeader(
               accountName:
                   Text("Student Name"), // Replace with actual student name
               accountEmail: Text(
@@ -74,48 +76,48 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.blue, // The background color of the drawer header
               ),
             ),
-            ListTile(
+            const ListTile(
               title: Text("Personal Details",
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ),
-            ListTile(
+            const ListTile(
               title: Text("Father's Name: Mr. XYZ"),
             ),
-            ListTile(
+            const ListTile(
               title: Text("Mother's Name: Mrs. ABC"),
             ),
-            ListTile(
+            const ListTile(
               title: Text("Email ID: student.email@example.com"),
             ),
-            ListTile(
+            const ListTile(
               title: Text("Father's Phone: 1234567890"),
             ),
-            ListTile(
+            const ListTile(
               title: Text("Mother's Phone: 6365248926"),
             ),
-            ListTile(
+            const ListTile(
               title: Text("Father's Occupation: Engineer"),
             ),
-            ListTile(
+            const ListTile(
               title: Text("Mother's Occupation: Teacher"),
             ),
-            ListTile(
+            const ListTile(
               title: Text("Mentor's Name: Dr. John Doe"),
             ),
-            ListTile(
+            const ListTile(
               title: Text("Mentor's Phone: 0987654321"),
             ),
-            Divider(),
+            const Divider(),
             ListTile(
-              title: Text("Logout"),
-              trailing: Icon(Icons.logout),
+              title: const Text("Logout"),
+              trailing: const Icon(Icons.logout),
               onTap: () {
                 // Handle logout logic here
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          LoginPage()), // Redirects to the LoginPage
+                          const LoginPage()), // Redirects to the LoginPage
                 );
               },
             ),
@@ -127,7 +129,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Row(
+            const Row(
               children: <Widget>[
                 CircleAvatar(
                   radius: 50,
@@ -141,15 +143,15 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'Circulars & Events',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Expanded(
               child: ListView(
-                children: <Widget>[
+                children: const <Widget>[
                   Card(
                     child: ListTile(
                       title: Text('Event 1'),
